@@ -1,8 +1,13 @@
 package com.drive.driveservice.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.Date;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -35,6 +40,12 @@ public class Application implements Serializable {
     @ApiModelProperty(value = "年龄")
     private Integer age;
 
+    @ApiModelProperty(value = "性别")
+    private String sex;
+
+    @ApiModelProperty(value = "手机号")
+    private String phone;
+
     @ApiModelProperty(value = "地址")
     private String adress;
 
@@ -47,8 +58,12 @@ public class Application implements Serializable {
     @ApiModelProperty(value = "体检表路径")
     private String file;
 
-    @ApiModelProperty(value = "身份证照片")
-    private String pictureCard;
+    @ApiModelProperty(value = "本人照片")
+    private String picture;
+
+    @ApiModelProperty(value = "报名时间")
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime createTime;
 
 
 }
