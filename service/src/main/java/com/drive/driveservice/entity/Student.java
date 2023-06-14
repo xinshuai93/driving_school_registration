@@ -63,8 +63,6 @@ public class Student implements Serializable {
     @ApiModelProperty(value = "备注")
     private String remark;
 
-    @ApiModelProperty(value = "用户id")
-    private String userId;
 
 
 }

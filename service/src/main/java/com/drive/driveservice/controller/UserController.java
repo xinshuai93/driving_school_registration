@@ -3,6 +3,7 @@ package com.drive.driveservice.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.drive.driveservice.dto.AssignAccountDTO;
 import com.drive.driveservice.entity.User;
 import com.drive.driveservice.entity.vo.UserQuery;
 import com.drive.driveservice.service.UserService;
@@ -84,7 +85,21 @@ public class UserController {
         List<User> records = userPage.getRecords();
 
         return R.ok().data("total",total).data("records",records);
+    }
 
+    @ApiOperation("分配账号")
+    @PostMapping("AssignAccount")
+    public R AssignAccount(@RequestBody AssignAccountDTO dto){
+        User user = new User();
+        //前端在报名通过后需要设置用户类型
+        user.setRole(dto.getRole());
+        user.setPhone(dto.getPhone());
+        user.setPassword("123456");
+        boolean isSave = userService.save(user);
+        if (isSave) {
+            return R.ok();
+        }
+        return R.error();
     }
 }
 
