@@ -8,11 +8,7 @@ import com.drive.driveservice.dto.RecordReportDTO;
 import com.drive.driveservice.service.TestService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -30,6 +26,7 @@ import java.util.Date;
  */
 @RestController
 @RequestMapping("/driveservice/test")
+@CrossOrigin
 public class TestController {
     @Autowired
     private TestService testService;
@@ -39,6 +36,8 @@ public class TestController {
     public void reportCheckRecord(@RequestBody RecordReportDTO dto, HttpServletResponse response) {
        testService.reportCheckRecord(dto,response);
     }
+
+
 
 
 }

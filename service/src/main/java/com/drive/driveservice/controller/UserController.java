@@ -1,13 +1,21 @@
 package com.drive.driveservice.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.drive.driveservice.entity.User;
+import com.drive.driveservice.entity.vo.UserQuery;
 import com.drive.driveservice.service.UserService;
 import com.drive.commonutils.R;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.awt.*;
+import java.util.List;
 
 /**
  * <p>
@@ -19,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/driveservice/user")
+@CrossOrigin
 public class UserController {
     @Autowired
     private UserService userService;
@@ -37,5 +46,45 @@ public class UserController {
         return R.ok().data("user",byId);
     }
 
+    @ApiOperation("修改用户")
+    @PostMapping("updateUser")
+    public R updateUser(@RequestBody User user){
+        userService.updateById(user);
+        return R.ok();
+    }
+
+    @ApiOperation("删除用户")
+    @DeleteMapping("deleteUser/{id}")
+    public R deleteUser(@PathVariable String id){
+        userService.removeById(id);
+        return R.ok();
+    }
+
+    @ApiOperation("分页查询")
+    @PostMapping("pageList/{page}/{limit}")
+    public R pageList(@PathVariable Long page,
+                      @PathVariable Long limit,
+                      @RequestBody(required = false) UserQuery userQuery){
+        Page<User> userPage = new Page<>(page,limit);
+        String name = userQuery.getName();
+        String sex = userQuery.getSex();
+        String phone = userQuery.getPhone();
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        if (!StringUtils.isEmpty(name)){
+            wrapper.like("name",name);
+        }
+        if (!StringUtils.isEmpty(sex)){
+            wrapper.eq("sex",sex);
+        }
+        if (!StringUtils.isEmpty(phone)){
+            wrapper.eq("phone",phone);
+        }
+        userService.page(userPage,wrapper);
+        Long total = userPage.getTotal();
+        List<User> records = userPage.getRecords();
+
+        return R.ok().data("total",total).data("records",records);
+
+    }
 }
 
