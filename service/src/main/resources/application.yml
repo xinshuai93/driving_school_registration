@@ -12,6 +12,7 @@ spring:
   jackson:
       date-format: yyyy-MM-dd HH:mm:ss
       time-zone: GMT+8
+
 server:
   port: 8001
 
@@ -19,5 +20,15 @@ server:
 #配置mapper xml文件的路径
 mybatis-plus:
   mapper-locations: classpath:com/drive/driveservice/mapper/xml/*.xml
+
+aliyun:
+  oss:
+    file:
+      endpoint: oss-cn-beijing.aliyuncs.com
+      keyid: LTAI5t7R23KoVzSiVsf92YdN
+      keysecret: uJlXZDi54fOlPUxOmfgm1AxjJbpqRf
+      bucketname: edu-xueyuan-1126
+
+
 
 

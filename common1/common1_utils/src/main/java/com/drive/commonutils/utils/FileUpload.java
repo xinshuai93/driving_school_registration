@@ -51,8 +51,12 @@ public class FileUpload {
         String saveName = originName;
         try {
             file.transferTo(new File(folder,saveName));
+            //文件路径
             String filePath = savePath + "\\" + saveName;
-            return new String("文件路径为:" + filePath);
+//            //文件名
+//            int i = filePath.lastIndexOf("\\");
+//            String substring = filePath.substring(i);
+            return new String(filePath);
         } catch (IOException e){
             return new String(e.getMessage());
         }
