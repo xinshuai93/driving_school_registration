@@ -37,6 +37,13 @@ public class ApplicationDTO {
     @ApiModelProperty("身份证照片")
     private String pictureCard;
 
+    @ApiModelProperty(value = "邮箱")
+    private String email;
+
+    @ApiModelProperty(value = "手机号")
+    private String phone;
+
+
     @ApiModelProperty("创建时间")
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;

@@ -61,6 +61,9 @@ public class Application implements Serializable {
     @ApiModelProperty(value = "本人照片")
     private String picture;
 
+    @ApiModelProperty(value = "邮箱")
+    private String email;
+
     @ApiModelProperty(value = "报名时间")
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;

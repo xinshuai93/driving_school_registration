@@ -7,12 +7,15 @@ import com.drive.driveservice.dto.ApplicationDTO;
 import com.drive.driveservice.entity.Application;
 import com.drive.driveservice.service.ApplicationService;
 import io.swagger.annotations.ApiOperation;
+import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
+import java.security.GeneralSecurityException;
 
 /**
  * <p>
@@ -58,6 +61,13 @@ public class ApplicationController {
     public R getById(@PathVariable String id) {
 //        applicationService.get(id);
         return R.ok();
+    }
+
+    @ApiOperation("审核通过后发送邮件告知学生报名成功并且发送账号和初始密码")
+    @PostMapping("/sendMail")
+    public R sendMail(@RequestBody ApplicationDTO dto) throws MessagingException, GeneralSecurityException {
+        String s = applicationService.sendMail(dto);
+        return R.ok().data("result",s);
     }
 
 }
