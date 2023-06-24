@@ -68,5 +68,8 @@ public class Application implements Serializable {
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
+    @ApiModelProperty(value = "审核状态")
+    private Boolean isPass;
+
 
 }
