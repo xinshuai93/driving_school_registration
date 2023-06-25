@@ -8,6 +8,7 @@ import com.drive.driveservice.entity.User;
 import com.drive.driveservice.entity.vo.UserQuery;
 import com.drive.driveservice.service.UserService;
 import com.drive.commonutils.R;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import org.apache.ibatis.annotations.Delete;
@@ -26,6 +27,7 @@ import java.util.List;
  * @author lx
  * @since 2023-05-31
  */
+@Api(tags = "用户")
 @RestController
 @RequestMapping("/driveservice/user")
 @CrossOrigin

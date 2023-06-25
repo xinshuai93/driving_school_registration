@@ -7,6 +7,7 @@ import com.drive.commonutils.R;
 import com.drive.driveservice.entity.Student;
 import com.drive.driveservice.entity.vo.StudentQuery;
 import com.drive.driveservice.service.StudentService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -23,6 +24,7 @@ import java.util.List;
  * @author lx
  * @since 2023-06-14
  */
+@Api(tags = "学员")
 @RestController
 @RequestMapping("/driveservice/student")
 @CrossOrigin
@@ -80,6 +82,7 @@ public class StudentController {
         List<Student> records = studentPage.getRecords();
         return R.ok().data("total",total).data("records",records);
     }
+
 
 }
 

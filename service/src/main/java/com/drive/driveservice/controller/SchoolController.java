@@ -4,6 +4,7 @@ package com.drive.driveservice.controller;
 import com.drive.commonutils.R;
 import com.drive.driveservice.entity.School;
 import com.drive.driveservice.service.SchoolService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
  * @author lx
  * @since 2023-06-14
  */
+@Api(tags = "驾校")
 @RestController
 @RequestMapping("/driveservice/school")
 @CrossOrigin

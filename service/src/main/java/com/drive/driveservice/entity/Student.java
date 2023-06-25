@@ -66,6 +66,11 @@ public class Student implements Serializable {
     @ApiModelProperty(value = "教练id")
     private String coachId;
 
+    @ApiModelProperty(value = "学习时长")
+    private Double learnTime;
+
+    @ApiModelProperty(value = "学习进度")
+    private Integer learnProgress;
 
 
 }
