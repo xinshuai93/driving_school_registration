@@ -4,6 +4,8 @@ import com.drive.driveservice.entity.Video;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 /**
  * <p>
  * 视频表 服务类
@@ -15,4 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 public interface VideoService extends IService<Video> {
 
     String uploadAliyun(MultipartFile file);
+
+    void removeMoreAlyVideo(List<String> videoIdList);
 }
