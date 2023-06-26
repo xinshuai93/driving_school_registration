@@ -181,11 +181,11 @@
                 <artifactId>aliyun-java-sdk-vod</artifactId>
                 <version>${aliyun-java-sdk-vod.version}</version>
             </dependency>
-            <dependency>
-                <groupId>com.aliyun</groupId>
-                <artifactId>aliyun-java-vod-upload</artifactId>
-                <version>${aliyun-java-vod-upload.version}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>com.aliyun</groupId>-->
+<!--                <artifactId>aliyun-java-vod-upload</artifactId>-->
+<!--                <version>${aliyun-java-vod-upload.version}</version>-->
+<!--            </dependency>-->
             <dependency>
                 <groupId>com.aliyun</groupId>
                 <artifactId>aliyun-sdk-vod-upload</artifactId>
@@ -202,17 +202,17 @@
                 <version>${json.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>commons-dbutils</groupId>
-                <artifactId>commons-dbutils</artifactId>
-                <version>${commons-dbutils.version}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>commons-dbutils</groupId>-->
+<!--                <artifactId>commons-dbutils</artifactId>-->
+<!--                <version>${commons-dbutils.version}</version>-->
+<!--            </dependency>-->
 
-            <dependency>
-                <groupId>com.alibaba.otter</groupId>
-                <artifactId>canal.client</artifactId>
-                <version>${canal.client.version}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>com.alibaba.otter</groupId>-->
+<!--                <artifactId>canal.client</artifactId>-->
+<!--                <version>${canal.client.version}</version>-->
+<!--            </dependency>-->
 
         </dependencies>
 

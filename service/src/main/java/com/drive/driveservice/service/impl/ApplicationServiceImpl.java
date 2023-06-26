@@ -86,7 +86,6 @@ public class ApplicationServiceImpl extends ServiceImpl<ApplicationMapper, Appli
         transport.sendMessage(mimeMessage,mimeMessage.getAllRecipients());
         //关闭连接
         transport.close();
-
         User user = new User();
         user.setName(name);
         user.setPhone(phone);

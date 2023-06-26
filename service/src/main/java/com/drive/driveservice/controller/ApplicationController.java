@@ -67,8 +67,11 @@ public class ApplicationController {
     @ApiOperation("单个查询")
     @GetMapping("getById/{id}")
     public R getById(@PathVariable String id) {
-//        applicationService.get(id);
-        return R.ok();
+        Application byId = applicationService.getById(id);
+        String file = byId.getFile();
+        String substring = file.substring(file.lastIndexOf("\\") + 1);
+        byId.setFile(substring);
+        return R.ok().data("application",byId);
     }
 
     @ApiOperation("审核通过后发送邮件告知学生报名成功并且发送账号和初始密码")

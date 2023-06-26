@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -66,6 +67,7 @@ public class Application implements Serializable {
 
     @ApiModelProperty(value = "报名时间")
     @TableField(fill = FieldFill.INSERT)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime createTime;
 
     @ApiModelProperty(value = "审核状态")
