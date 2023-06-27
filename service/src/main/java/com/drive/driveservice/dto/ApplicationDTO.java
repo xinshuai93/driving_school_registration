@@ -2,6 +2,7 @@ package com.drive.driveservice.dto;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -43,6 +44,8 @@ public class ApplicationDTO {
     @ApiModelProperty(value = "手机号")
     private String phone;
 
+    @ApiModelProperty(value = "报名失败通知")
+    private String message;
 
     @ApiModelProperty("创建时间")
     @TableField(fill = FieldFill.INSERT)

@@ -20,4 +20,6 @@ import java.security.GeneralSecurityException;
 public interface ApplicationService extends IService<Application> {
 
     String sendMail(ApplicationDTO dto) throws GeneralSecurityException, MessagingException;
+
+    void sendFailMail(ApplicationDTO dto) throws GeneralSecurityException, MessagingException;
 }

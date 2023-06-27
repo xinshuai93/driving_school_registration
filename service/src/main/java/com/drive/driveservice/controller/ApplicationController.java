@@ -81,6 +81,13 @@ public class ApplicationController {
         return R.ok().data("result",s);
     }
 
+    @ApiOperation("审核不通过后发送邮件告知学生失败原因")
+    @PostMapping("/sendFailMail")
+    public R sendFailMail(@RequestBody ApplicationDTO dto) throws MessagingException, GeneralSecurityException {
+        applicationService.sendFailMail(dto);
+        return R.ok();
+    }
+
     @ApiOperation("分页查询")
     @PostMapping("pageApplication")
     public R pageApplication(@PathVariable Long page,
