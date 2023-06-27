@@ -4,9 +4,9 @@ package com.drive.driveservice.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.drive.commonutils.R;
-import com.drive.driveservice.entity.Student;
+import com.drive.driveservice.entity.*;
 import com.drive.driveservice.entity.vo.StudentQuery;
-import com.drive.driveservice.service.StudentService;
+import com.drive.driveservice.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +32,18 @@ public class StudentController {
 
     @Autowired
     private StudentService studentService;
+
+    @Autowired
+    private SubjectOneService subjectOneService;
+
+    @Autowired
+    private SubjectTwoService subjectTwoService;
+
+    @Autowired
+    private SubjectThreeService subjectThreeService;
+
+    @Autowired
+    private SubjectFourService subjectFourService;
 
     @ApiOperation("新增学员")
     @PostMapping("addStudent")
@@ -81,6 +93,41 @@ public class StudentController {
         Long total = studentPage.getTotal();
         List<Student> records = studentPage.getRecords();
         return R.ok().data("total",total).data("records",records);
+    }
+
+    @ApiOperation("查看自己所需学时")
+    @GetMapping("getNeedTime/{id}")
+    public R getNeedTime(@PathVariable String id){
+        QueryWrapper<Student> wrapper = new QueryWrapper<>();
+        wrapper.eq("id",id);
+        String type = studentService.getOne(wrapper).getLicenseType();
+        Integer progress = studentService.getOne(wrapper).getLearnProgress();
+        Double needTime = 0.0;
+        if (progress == 1) {
+            QueryWrapper<SubjectOne> wrapper1 = new QueryWrapper<>();
+            wrapper1.eq("type",type);
+            needTime = subjectOneService.getOne(wrapper1).getNeedTime()-studentService.getOne(wrapper).getLearnTime();
+            return R.ok().data("needTime",needTime);
+        }
+        else if (progress == 2) {
+            QueryWrapper<SubjectTwo> wrapper1 = new QueryWrapper<>();
+            wrapper1.eq("type",type);
+            needTime = subjectTwoService.getOne(wrapper1).getNeedTime()-studentService.getOne(wrapper).getLearnTime();
+            return R.ok().data("needTime",needTime);
+        }
+        else if (progress == 3) {
+            QueryWrapper<SubjectThree> wrapper1 = new QueryWrapper<>();
+            wrapper1.eq("type",type);
+            needTime = subjectThreeService.getOne(wrapper1).getNeedTime()-studentService.getOne(wrapper).getLearnTime();
+            return R.ok().data("needTime",needTime);
+        }
+        else if (progress == 4) {
+            QueryWrapper<SubjectFour> wrapper1 = new QueryWrapper<>();
+            wrapper1.eq("type",type);
+            needTime = subjectFourService.getOne(wrapper1).getNeedTime()-studentService.getOne(wrapper).getLearnTime();
+            return R.ok().data("needTime",needTime);
+        }
+        return R.error();
     }
 
 

@@ -41,57 +41,56 @@ public class BookExamController {
     @Autowired
     private SubjectFourService subjectFourService;
 
-    @ApiOperation("能否预约考试")
-    @GetMapping("isBook/{id}")
-    public R isBook(@PathVariable String id){
-        QueryWrapper<Student> wrapper = new QueryWrapper<>();
-        wrapper.eq("id",id);
-        String type = studentService.getOne(wrapper).getLicenseType();
-        String message = "true";
-        Integer progress = studentService.getOne(wrapper).getLearnProgress();
-        System.out.println(type);
-        if (progress == 1){
-            QueryWrapper<SubjectOne> wrapper1 = new QueryWrapper<>();
-            wrapper1.eq("type",type);
-            if (studentService.getOne(wrapper).getLearnTime()>=subjectOneService.getOne(wrapper1).getNeedTime()) {
-                return R.ok().data("message",message);
-            }else{
-                message = "false";
-                return R.ok().data("message",message);
-            }
-        }
-        else if (progress == 2){
-            QueryWrapper<SubjectTwo> wrapper1 = new QueryWrapper<>();
-            wrapper1.eq("type",type);
-            if (studentService.getOne(wrapper).getLearnTime()>=subjectTwoService.getOne(wrapper1).getNeedTime()) {
-                return R.ok().data("message",message);
-            }else{
-                message = "false";
-                return R.ok().data("message",message);
-            }
-        }
-        else if (progress == 3){
-            QueryWrapper<SubjectThree> wrapper1 = new QueryWrapper<>();
-            wrapper1.eq("type",type);
-            if (studentService.getOne(wrapper).getLearnTime()>=subjectThreeService.getOne(wrapper1).getNeedTime()) {
-                return R.ok().data("message",message);
-            }else{
-                message = "false";
-                return R.ok().data("message",message);
-            }
-        }
-        else if (progress == 4){
-            QueryWrapper<SubjectFour> wrapper1 = new QueryWrapper<>();
-            wrapper1.eq("type",type);
-            if (studentService.getOne(wrapper).getLearnTime()>=subjectFourService.getOne(wrapper1).getNeedTime()) {
-                return R.ok().data("message",message);
-            }else{
-                message = "false";
-                return R.ok().data("message",message);
-            }
-        }
-        return R.error();
-    }
+//    @ApiOperation("能否预约考试")
+//    @GetMapping("isBook/{id}")
+//    public R isBook(@PathVariable String id){
+//        QueryWrapper<Student> wrapper = new QueryWrapper<>();
+//        wrapper.eq("id",id);
+//        String type = studentService.getOne(wrapper).getLicenseType();
+//        String message = "true";
+//        Integer progress = studentService.getOne(wrapper).getLearnProgress();
+//        if (progress == 1){
+//            QueryWrapper<SubjectOne> wrapper1 = new QueryWrapper<>();
+//            wrapper1.eq("type",type);
+//            if (studentService.getOne(wrapper).getLearnTime()>=subjectOneService.getOne(wrapper1).getNeedTime()) {
+//                return R.ok().data("message",message);
+//            }else{
+//                message = "false";
+//                return R.ok().data("message",message);
+//            }
+//        }
+//        else if (progress == 2){
+//            QueryWrapper<SubjectTwo> wrapper1 = new QueryWrapper<>();
+//            wrapper1.eq("type",type);
+//            if (studentService.getOne(wrapper).getLearnTime()>=subjectTwoService.getOne(wrapper1).getNeedTime()) {
+//                return R.ok().data("message",message);
+//            }else{
+//                message = "false";
+//                return R.ok().data("message",message);
+//            }
+//        }
+//        else if (progress == 3){
+//            QueryWrapper<SubjectThree> wrapper1 = new QueryWrapper<>();
+//            wrapper1.eq("type",type);
+//            if (studentService.getOne(wrapper).getLearnTime()>=subjectThreeService.getOne(wrapper1).getNeedTime()) {
+//                return R.ok().data("message",message);
+//            }else{
+//                message = "false";
+//                return R.ok().data("message",message);
+//            }
+//        }
+//        else if (progress == 4){
+//            QueryWrapper<SubjectFour> wrapper1 = new QueryWrapper<>();
+//            wrapper1.eq("type",type);
+//            if (studentService.getOne(wrapper).getLearnTime()>=subjectFourService.getOne(wrapper1).getNeedTime()) {
+//                return R.ok().data("message",message);
+//            }else{
+//                message = "false";
+//                return R.ok().data("message",message);
+//            }
+//        }
+//        return R.error();
+//    }
 
     @ApiOperation("预约考试")
     @PostMapping("bookExam/{id}")
@@ -102,9 +101,57 @@ public class BookExamController {
         bookExam.setName(studentService.getOne(wrapper).getName());
         bookExam.setSubjectType("科目"+studentService.getOne(wrapper).getLearnProgress().toString());
         bookExam.setType(studentService.getOne(wrapper).getLicenseType());
-        bookExamService.save(bookExam);
-        return R.ok();
+        String type = studentService.getOne(wrapper).getLicenseType();
+        String message = "true";
+        Integer progress = studentService.getOne(wrapper).getLearnProgress();
+        if (progress == 1){
+            QueryWrapper<SubjectOne> wrapper1 = new QueryWrapper<>();
+            wrapper1.eq("type",type);
+            if (studentService.getOne(wrapper).getLearnTime()>=subjectOneService.getOne(wrapper1).getNeedTime()) {
+                bookExamService.save(bookExam);
+                return R.ok().data("message",message);
+            }else{
+                message = "学时不够无法预约";
+                return R.error().data("message",message);
+            }
+        }
+        else if (progress == 2){
+            QueryWrapper<SubjectTwo> wrapper1 = new QueryWrapper<>();
+            wrapper1.eq("type",type);
+            if (studentService.getOne(wrapper).getLearnTime()>=subjectTwoService.getOne(wrapper1).getNeedTime()) {
+                bookExamService.save(bookExam);
+                return R.ok().data("message",message);
+            }else{
+                message = "学时不够无法预约";
+                return R.error().data("message",message);
+            }
+        }
+        else if (progress == 3){
+            QueryWrapper<SubjectThree> wrapper1 = new QueryWrapper<>();
+            wrapper1.eq("type",type);
+            if (studentService.getOne(wrapper).getLearnTime()>=subjectThreeService.getOne(wrapper1).getNeedTime()) {
+                bookExamService.save(bookExam);
+                return R.ok().data("message",message);
+            }else{
+                message = "学时不够无法预约";
+                return R.error().data("message",message);
+            }
+        }
+        else if (progress == 4){
+            QueryWrapper<SubjectFour> wrapper1 = new QueryWrapper<>();
+            wrapper1.eq("type",type);
+            if (studentService.getOne(wrapper).getLearnTime()>=subjectFourService.getOne(wrapper1).getNeedTime()) {
+                bookExamService.save(bookExam);
+                return R.ok().data("message",message);
+            }else{
+                message = "学时不够无法预约";
+                return R.error().data("message",message);
+            }
+        }
+        return R.error();
     }
+
+
 
 }
 
