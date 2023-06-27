@@ -96,6 +96,26 @@ public class QuestionController {
 
     //TODO 修改题目和选项答案
 
+    @ApiOperation("根据id获取题")
+    @GetMapping("getQuestionById/{id}")
+    public R getQuestionById(@PathVariable String id){
+        questionService.getById(id);
+        return R.ok();
+    }
+    @ApiOperation("修改题目和答案")
+    @PostMapping("updateQuestion")
+    public R updateQuestion(@RequestBody Question question){
+        questionService.updateById(question);
+        return R.ok();
+    }
+
+    @ApiOperation("修改选项")
+    @PostMapping("updateOption")
+    public R updateOption(@RequestBody Options options){
+        optionService.updateById(options);
+        return R.ok();
+    }
+
 
     //平时练习
     @ApiOperation("平时练习组成题库")
@@ -123,6 +143,7 @@ public class QuestionController {
         }
         return R.ok().data("objects",objects);
     }
+
 
 
 }

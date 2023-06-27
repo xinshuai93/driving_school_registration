@@ -5,9 +5,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.drive.commonutils.R;
 import com.drive.driveservice.dto.CoachDTO;
+import com.drive.driveservice.entity.BookExam;
 import com.drive.driveservice.entity.Coach;
 import com.drive.driveservice.entity.Student;
 import com.drive.driveservice.entity.vo.CoachQuery;
+import com.drive.driveservice.service.BookExamService;
 import com.drive.driveservice.service.CoachService;
 import com.drive.driveservice.service.StudentService;
 import io.swagger.annotations.Api;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -39,6 +42,9 @@ public class CoachController {
 
     @Autowired
     private StudentService studentService;
+
+    @Autowired
+    private BookExamService bookExamService;
 
 
     @ApiOperation("新增教练")
@@ -115,6 +121,48 @@ public class CoachController {
         return R.ok().data("total",total).data("records",records);
     }
 
+    @ApiOperation("获取审核人员")
+    @GetMapping("getCheckStu/{id}")
+    public R getCheckStu(@PathVariable String id){
+        QueryWrapper<Student> wrapper = new QueryWrapper<>();
+        wrapper.eq("coach_id",id);
+        QueryWrapper<BookExam> wrapper1 = new QueryWrapper<>();
+        List<Student> list = studentService.list(wrapper);
+        wrapper1.eq("is_pass",2);
+        List<BookExam> list1 = bookExamService.list(wrapper1);
+        List<BookExam> list2 =new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            for (int j = 0; j < list1.size(); j++) {
+                if (list.get(i).getId().equals(list1.get(j).getStudentId())){
+                    list2.add(list1.get(j));
+                    break;
+                }
+            }
+        }
+        return R.ok().data("list",list2);
+    }
+
+    @ApiOperation("通过审核")
+    @GetMapping("passCheck/{id}")
+    public R passCheck(@PathVariable String id){
+        QueryWrapper<BookExam> wrapper = new QueryWrapper<>();
+        wrapper.eq("id",id);
+        BookExam bookExam = bookExamService.getOne(wrapper);
+        bookExam.setIsPass(1);
+        bookExamService.updateById(bookExam);
+        return R.ok();
+    }
+
+    @ApiOperation("驳回审核")
+    @GetMapping("rejectCheck/{id}")
+    public R rejectCheck(@PathVariable String id){
+        QueryWrapper<BookExam> wrapper = new QueryWrapper<>();
+        wrapper.eq("id",id);
+        BookExam bookExam = bookExamService.getOne(wrapper);
+        bookExam.setIsPass(3);
+        bookExamService.updateById(bookExam);
+        return R.ok();
+    }
 
 }
 
