@@ -96,35 +96,23 @@ public class QuestionController {
 
     //TODO 修改题目和选项答案
 
-    @ApiOperation("根据id获取题")
-    @GetMapping("getQuestionById/{id}")
-    public R getQuestionById(@PathVariable String id){
-        questionService.getById(id);
-        return R.ok();
-    }
-    @ApiOperation("修改题目和答案")
-    @PostMapping("updateQuestion")
-    public R updateQuestion(@RequestBody Question question){
-        questionService.updateById(question);
-        return R.ok();
-    }
-
-    @ApiOperation("修改选项")
-    @PostMapping("updateOption")
-    public R updateOption(@RequestBody Options options){
-        optionService.updateById(options);
-        return R.ok();
-    }
-
 
     //平时练习
     @ApiOperation("平时练习组成题库")
     @GetMapping("generateExercise")
     public R generateExercise(){
-        //单选题
+        //单选择题
         QueryWrapper<Question> wrapper = new QueryWrapper<>();
         wrapper.eq("type",1);
-        List<Question> list = questionService.list(wrapper);
+        List<Question> lista = questionService.list(wrapper);
+        List<String> idList = new ArrayList<>();
+        for (Question question : lista) {
+            idList.add(question.getId());
+        }
+        List<String> randoms = createRandoms(idList, 2);
+        QueryWrapper<Question> wrapper2 = new QueryWrapper<>();
+        wrapper2.in("id",randoms);
+        List<Question> list = questionService.list(wrapper2);
         List<Map<String, QuestionAndOptionVo>> objects = new ArrayList<>();
         for (Question question : list) {  //问题
             HashMap<String, QuestionAndOptionVo> hashMap = new HashMap<>();
@@ -141,9 +129,82 @@ public class QuestionController {
             hashMap.put(id,optionVo);
             objects.add(hashMap);
         }
+
+        //多选
+        QueryWrapper<Question> wrappera = new QueryWrapper<>();
+        wrappera.eq("type",2);
+        List<Question> listaa = questionService.list(wrappera);
+        List<String> idLista = new ArrayList<>();
+        for (Question question : listaa) {
+            idLista.add(question.getId());
+        }
+        List<String> randomsa = createRandoms(idLista, 2);
+        QueryWrapper<Question> wrapper2a = new QueryWrapper<>();
+        wrapper2a.in("id",randomsa);
+        List<Question> listz = questionService.list(wrapper2a);
+        for (Question question : listz) {  //问题
+            HashMap<String, QuestionAndOptionVo> hashMap = new HashMap<>();
+            String id = question.getId();
+            String content = question.getContent();
+            QueryWrapper<Options> wrapper1 = new QueryWrapper<>();
+            wrapper1.eq("question_id",id);
+            List<Options> list1 = optionService.list(wrapper1);
+            //选项
+            List<Options> optionList = new ArrayList<>(list1);
+            QuestionAndOptionVo optionVo = new QuestionAndOptionVo();
+            optionVo.setQuestion(content);
+            optionVo.setOptionList(optionList);
+            hashMap.put(id,optionVo);
+            objects.add(hashMap);
+        }
+
+        //判断
+        QueryWrapper<Question> wrapperb = new QueryWrapper<>();
+        wrapperb.eq("type",3);
+        List<Question> listaab = questionService.list(wrapperb);
+        List<String> idListab = new ArrayList<>();
+        for (Question question : listaab) {
+            idListab.add(question.getId());
+        }
+        List<String> randomsab = createRandoms(idListab, 2);
+        QueryWrapper<Question> wrapper2ab = new QueryWrapper<>();
+        wrapper2ab.in("id",randomsab);
+        List<Question> listzb = questionService.list(wrapper2ab);
+        for (Question question : listzb) {  //问题
+            HashMap<String, QuestionAndOptionVo> hashMap = new HashMap<>();
+            String id = question.getId();
+            String content = question.getContent();
+            QueryWrapper<Options> wrapper1 = new QueryWrapper<>();
+            wrapper1.eq("question_id",0);
+            List<Options> list1 = optionService.list(wrapper1);
+            //选项
+            List<Options> optionList = new ArrayList<>(list1);
+            QuestionAndOptionVo optionVo = new QuestionAndOptionVo();
+            optionVo.setQuestion(content);
+            optionVo.setOptionList(optionList);
+            hashMap.put(id,optionVo);
+            objects.add(hashMap);
+        }
+
         return R.ok().data("objects",objects);
     }
 
+    private static List<String> createRandoms(List<String> list, int n) {
+        Map<Integer,String> map = new HashMap();
+        List<String> news = new ArrayList();
+        if (list.size() <= n) {
+            return list;
+        } else {
+            while (map.size() < n) {
+                int random = (int)(Math.random() * list.size());
+                if (!map.containsKey(random)) {
+                    map.put(random, "");
+                    news.add(list.get(random));
+                }
+            }
+            return news;
+        }
+    }
 
 
 }
