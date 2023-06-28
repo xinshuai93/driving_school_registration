@@ -95,6 +95,19 @@ public class QuestionController {
     }
 
     //TODO 修改题目和选项答案
+    @ApiOperation("修改题目")
+    @PostMapping("updateQuestion")
+    public R updateQuestion(@RequestBody Question question){
+        questionService.updateById(question);
+        return R.ok();
+    }
+
+    @ApiOperation("修改选项")
+    @PostMapping("updateOption")
+    public R updateOption(@RequestBody Options options){
+        optionService.updateById(options);
+        return R.ok();
+    }
 
 
     //平时练习
