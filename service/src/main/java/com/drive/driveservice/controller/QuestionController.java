@@ -38,6 +38,7 @@ import java.util.Map;
 @Api(tags = "题目管理")
 @RestController
 @RequestMapping("/driveservice/question")
+@CrossOrigin
 public class QuestionController {
     @Autowired
     private QuestionService questionService;
