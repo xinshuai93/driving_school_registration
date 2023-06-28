@@ -6,11 +6,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.drive.commonutils.R;
 import com.drive.driveservice.dto.AddAnswerDTO;
-import com.drive.driveservice.dto.ExamDTO;
-import com.drive.driveservice.dto.ListExamDTO;
 import com.drive.driveservice.entity.Options;
 import com.drive.driveservice.entity.Question;
-import com.drive.driveservice.entity.vo.QuestionAndOptionVo;
 import com.drive.driveservice.entity.vo.QuestionQuery;
 import com.drive.driveservice.entity.vo.QuestionsVo;
 import com.drive.driveservice.service.OptionService;
@@ -173,109 +170,6 @@ public class QuestionController {
         return R.ok();
     }
 
-
-    //平时练习
-    @ApiOperation("练习或者考试组成题库")
-    @GetMapping("generateExercise")
-    public R generateExercise(){
-        //单选择题
-        QueryWrapper<Question> wrapper = new QueryWrapper<>();
-        wrapper.eq("type",1);
-        List<Question> lista = questionService.list(wrapper);
-        List<String> idList = new ArrayList<>();
-        for (Question question : lista) {
-            idList.add(question.getId());
-        }
-        List<String> randoms = createRandoms(idList, 2);
-        QueryWrapper<Question> wrapper2 = new QueryWrapper<>();
-        wrapper2.in("id",randoms);
-        List<Question> list = questionService.list(wrapper2);
-        List<Map<String, QuestionAndOptionVo>> objects = new ArrayList<>();
-        for (Question question : list) {  //问题
-            HashMap<String, QuestionAndOptionVo> hashMap = new HashMap<>();
-            String id = question.getId();
-            String content = question.getContent();
-            QueryWrapper<Options> wrapper1 = new QueryWrapper<>();
-            wrapper1.eq("question_id",id);
-            List<Options> list1 = optionService.list(wrapper1);
-            //选项
-            List<Options> optionList = new ArrayList<>(list1);
-            QuestionAndOptionVo optionVo = new QuestionAndOptionVo();
-            optionVo.setQuestion(content);
-            optionVo.setOptionList(optionList);
-            hashMap.put(id,optionVo);
-            objects.add(hashMap);
-        }
-
-        //多选
-        QueryWrapper<Question> wrappera = new QueryWrapper<>();
-        wrappera.eq("type",2);
-        List<Question> listaa = questionService.list(wrappera);
-        List<String> idLista = new ArrayList<>();
-        for (Question question : listaa) {
-            idLista.add(question.getId());
-        }
-        List<String> randomsa = createRandoms(idLista, 2);
-        QueryWrapper<Question> wrapper2a = new QueryWrapper<>();
-        wrapper2a.in("id",randomsa);
-        List<Question> listz = questionService.list(wrapper2a);
-        for (Question question : listz) {  //问题
-            HashMap<String, QuestionAndOptionVo> hashMap = new HashMap<>();
-            String id = question.getId();
-            String content = question.getContent();
-            QueryWrapper<Options> wrapper1 = new QueryWrapper<>();
-            wrapper1.eq("question_id",id);
-            List<Options> list1 = optionService.list(wrapper1);
-            //选项
-            List<Options> optionList = new ArrayList<>(list1);
-            QuestionAndOptionVo optionVo = new QuestionAndOptionVo();
-            optionVo.setQuestion(content);
-            optionVo.setOptionList(optionList);
-            hashMap.put(id,optionVo);
-            objects.add(hashMap);
-        }
-
-        //判断
-        QueryWrapper<Question> wrapperb = new QueryWrapper<>();
-        wrapperb.eq("type",3);
-        List<Question> listaab = questionService.list(wrapperb);
-        List<String> idListab = new ArrayList<>();
-        for (Question question : listaab) {
-            idListab.add(question.getId());
-        }
-        List<String> randomsab = createRandoms(idListab, 2);
-        QueryWrapper<Question> wrapper2ab = new QueryWrapper<>();
-        wrapper2ab.in("id",randomsab);
-        List<Question> listzb = questionService.list(wrapper2ab);
-        for (Question question : listzb) {  //问题
-            HashMap<String, QuestionAndOptionVo> hashMap = new HashMap<>();
-            String id = question.getId();
-            String content = question.getContent();
-            QueryWrapper<Options> wrapper1 = new QueryWrapper<>();
-            wrapper1.eq("question_id",0);
-            List<Options> list1 = optionService.list(wrapper1);
-            //选项
-            List<Options> optionList = new ArrayList<>(list1);
-            QuestionAndOptionVo optionVo = new QuestionAndOptionVo();
-            optionVo.setQuestion(content);
-            optionVo.setOptionList(optionList);
-            hashMap.put(id,optionVo);
-            objects.add(hashMap);
-        }
-
-        return R.ok().data("objects",objects);
-    }
-
-//    @ApiOperation("平时练习做题对答案，得分数")
-//    @PostMapping("outScore")
-//    public R outScore(@RequestBody ListExamDTO dto) {
-//        List<ExamDTO> list = dto.getList();
-//        for (ExamDTO examDTO : list) {
-//            String questionId = examDTO.getQuestionId();
-//            String answerIds = examDTO.getAnswerIds();
-//        }
-//    }
-
     //TODO 考试试卷发放
     //TODO 考试完了对答案，得出分数
 
@@ -307,6 +201,7 @@ public class QuestionController {
             vo.setOptionsList(options);
             vo.setType(question.getType());
             vo.setKey(question.getAnswerId());
+            vo.setExplains(question.getExplains());
             objects1.add(vo);
         }
 
@@ -332,6 +227,7 @@ public class QuestionController {
             vo.setOptionsList(options);
             vo.setType(question.getType());
             vo.setKey(question.getAnswerId());
+            vo.setExplains(question.getExplains());
             objects1.add(vo);
         }
 
@@ -357,12 +253,11 @@ public class QuestionController {
             vo.setOptionsList(options);
             vo.setType(question.getType());
             vo.setKey(question.getAnswerId());
+            vo.setExplains(question.getExplains());
             objects1.add(vo);
         }
         return R.ok().data("objects1",objects1);
     }
-
-
 
 
     //随机在数组里选出几个数

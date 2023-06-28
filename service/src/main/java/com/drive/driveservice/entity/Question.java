@@ -41,5 +41,8 @@ public class Question implements Serializable {
     @ApiModelProperty(value = "所属科目,1:科目1,2:科目4")
     private Integer kemu;
 
+    @ApiModelProperty(value = "解析")
+    private String explains;
+
 
 }

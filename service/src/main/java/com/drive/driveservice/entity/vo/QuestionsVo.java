@@ -19,4 +19,5 @@ public class QuestionsVo {
     private List<Options> optionsList;
     private String key;  //正确答案
     private Integer type;
+    private String explains;
 }
