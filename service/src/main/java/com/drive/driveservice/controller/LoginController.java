@@ -27,12 +27,12 @@ public class LoginController {
     @PostMapping("/login")
     public R login(@RequestBody LoginDTO dto){
         QueryWrapper<User> wrapper = new QueryWrapper<>();
-        wrapper.eq("account",dto.getAccount());
+        wrapper.eq("phone",dto.getPhone());
         User user = userService.list(wrapper).get(0);
-        String success = "success";
+        String roleId = user.getRoleId();
         String fail = "fail";
         if (user.getPassword().equals(dto.getPassword())) {
-            return R.ok().data("message",success);
+            return R.ok().data("message",roleId);
         }
         return R.error().data("message",fail);
     }

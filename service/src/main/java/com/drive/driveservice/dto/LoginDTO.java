@@ -10,6 +10,6 @@ import lombok.Data;
 @Data
 @ApiModel(value = "登录DTO",description = "登录DTO")
 public class LoginDTO {
-    private String account;
+    private String phone;
     private String password;
 }

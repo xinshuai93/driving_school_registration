@@ -6,10 +6,13 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.drive.commonutils.R;
 import com.drive.driveservice.dto.AddAnswerDTO;
+import com.drive.driveservice.dto.ExamDTO;
+import com.drive.driveservice.dto.ListExamDTO;
 import com.drive.driveservice.entity.Options;
 import com.drive.driveservice.entity.Question;
 import com.drive.driveservice.entity.vo.QuestionAndOptionVo;
 import com.drive.driveservice.entity.vo.QuestionQuery;
+import com.drive.driveservice.entity.vo.QuestionsVo;
 import com.drive.driveservice.service.OptionService;
 import com.drive.driveservice.service.QuestionService;
 import io.swagger.annotations.Api;
@@ -171,7 +174,7 @@ public class QuestionController {
 
 
     //平时练习
-    @ApiOperation("平时练习组成题库")
+    @ApiOperation("练习或者考试组成题库")
     @GetMapping("generateExercise")
     public R generateExercise(){
         //单选择题
@@ -262,6 +265,106 @@ public class QuestionController {
         return R.ok().data("objects",objects);
     }
 
+//    @ApiOperation("平时练习做题对答案，得分数")
+//    @PostMapping("outScore")
+//    public R outScore(@RequestBody ListExamDTO dto) {
+//        List<ExamDTO> list = dto.getList();
+//        for (ExamDTO examDTO : list) {
+//            String questionId = examDTO.getQuestionId();
+//            String answerIds = examDTO.getAnswerIds();
+//        }
+//    }
+
+    //TODO 考试试卷发放
+    //TODO 考试完了对答案，得出分数
+
+
+    //平时练习
+    @ApiOperation("练习或者考试组成题库")
+    @GetMapping("generateExercise1")
+    public R generateExercise1(){
+        //单选择题
+        QueryWrapper<Question> wrapper = new QueryWrapper<>();
+        wrapper.eq("type",1);
+        List<Question> lista = questionService.list(wrapper);
+        List<String> idList = new ArrayList<>();
+        for (Question question : lista) {
+            idList.add(question.getId());
+        }
+        List<String> randoms = createRandoms(idList, 2);
+        QueryWrapper<Question> wrapper2 = new QueryWrapper<>();
+        wrapper2.in("id",randoms);
+        List<Question> list = questionService.list(wrapper2);
+        List<QuestionsVo> objects1 = new ArrayList<>();
+        for (Question question : list) {
+            QuestionsVo vo = new QuestionsVo();
+            String id = question.getId();
+            vo.setId(id);
+            vo.setContent(question.getContent());
+            //获取选项
+            List<Options> options = getOptions(id);
+            vo.setOptionsList(options);
+            vo.setType(question.getType());
+            vo.setKey(question.getAnswerId());
+            objects1.add(vo);
+        }
+
+        //多选
+        QueryWrapper<Question> wrappera = new QueryWrapper<>();
+        wrappera.eq("type",2);
+        List<Question> listaa = questionService.list(wrappera);
+        List<String> idLista = new ArrayList<>();
+        for (Question question : listaa) {
+            idLista.add(question.getId());
+        }
+        List<String> randomsa = createRandoms(idLista, 2);
+        QueryWrapper<Question> wrapper2a = new QueryWrapper<>();
+        wrapper2a.in("id",randomsa);
+        List<Question> listz = questionService.list(wrapper2a);
+        for (Question question : listz) {
+            QuestionsVo vo = new QuestionsVo();
+            String id = question.getId();
+            vo.setId(id);
+            vo.setContent(question.getContent());
+            //获取选项
+            List<Options> options = getOptions(id);
+            vo.setOptionsList(options);
+            vo.setType(question.getType());
+            vo.setKey(question.getAnswerId());
+            objects1.add(vo);
+        }
+
+        //判断
+        QueryWrapper<Question> wrapperb = new QueryWrapper<>();
+        wrapperb.eq("type",3);
+        List<Question> listaab = questionService.list(wrapperb);
+        List<String> idListab = new ArrayList<>();
+        for (Question question : listaab) {
+            idListab.add(question.getId());
+        }
+        List<String> randomsab = createRandoms(idListab, 2);
+        QueryWrapper<Question> wrapper2ab = new QueryWrapper<>();
+        wrapper2ab.in("id",randomsab);
+        List<Question> listzb = questionService.list(wrapper2ab);
+        for (Question question : listzb) {
+            QuestionsVo vo = new QuestionsVo();
+            String id = question.getId();
+            vo.setId(id);
+            vo.setContent(question.getContent());
+            //获取选项
+            List<Options> options = getOptions("0");
+            vo.setOptionsList(options);
+            vo.setType(question.getType());
+            vo.setKey(question.getAnswerId());
+            objects1.add(vo);
+        }
+        return R.ok().data("objects1",objects1);
+    }
+
+
+
+
+    //随机在数组里选出几个数
     private static List<String> createRandoms(List<String> list, int n) {
         Map<Integer,String> map = new HashMap();
         List<String> news = new ArrayList();
@@ -277,6 +380,13 @@ public class QuestionController {
             }
             return news;
         }
+    }
+
+    //根据题目id获取选项
+    public List<Options> getOptions(String id) {
+        QueryWrapper<Options> wrapper = new QueryWrapper<>();
+        wrapper.eq("question_id",id);
+        return optionService.list(wrapper);
     }
 
 
