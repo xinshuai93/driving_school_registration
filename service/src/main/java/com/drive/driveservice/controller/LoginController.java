@@ -17,6 +17,7 @@ import java.util.Objects;
  */
 @RestController
 @RequestMapping("/driveservice/login")
+@CrossOrigin
 public class LoginController {
 
     @Autowired

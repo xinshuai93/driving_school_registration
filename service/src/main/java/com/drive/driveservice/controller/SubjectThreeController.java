@@ -23,6 +23,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/driveservice/subject-three")
+@CrossOrigin
 public class SubjectThreeController {
 
     @Autowired

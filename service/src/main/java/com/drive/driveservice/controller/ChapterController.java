@@ -33,6 +33,7 @@ import java.util.List;
 @Api(tags = "章节-视频表")
 @RestController
 @RequestMapping("/driveservice/chapter")
+@CrossOrigin
 public class ChapterController {
     @Autowired
     private ChapterService chapterService;

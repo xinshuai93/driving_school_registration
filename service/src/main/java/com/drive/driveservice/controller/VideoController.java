@@ -30,6 +30,7 @@ import java.util.List;
 @Api(tags = "阿里云视频")
 @RestController
 @RequestMapping("/driveservice/video")
+@CrossOrigin
 public class VideoController {
     @Autowired
     private VideoService videoService;

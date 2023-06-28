@@ -1,6 +1,7 @@
 package com.drive.driveservice.controller;
 
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/driveservice/exam-record")
+@CrossOrigin
 public class ExamRecordController {
 
 }

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = "预约考试")
 @RestController
 @RequestMapping("/driveservice/book-exam")
+@CrossOrigin
 public class BookExamController {
 
     @Autowired

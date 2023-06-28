@@ -35,6 +35,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/driveservice/application")
+@CrossOrigin
 public class ApplicationController {
     @Autowired
     private ApplicationService applicationService;

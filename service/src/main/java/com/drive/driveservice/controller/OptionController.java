@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = "选项管理")
 @RestController
 @RequestMapping("/driveservice/option")
+@CrossOrigin
 public class OptionController {
 
     @Autowired

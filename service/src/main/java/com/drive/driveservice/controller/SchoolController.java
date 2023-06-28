@@ -29,8 +29,8 @@ public class SchoolController {
     @ApiOperation("查找驾校")
     @GetMapping("getSchool/{id}")
     public R getSchool(@PathVariable String id){
-        schoolService.getById(id);
-        return R.ok();
+        School byId = schoolService.getById(id);
+        return R.ok().data("byId",byId);
     }
 
     @ApiOperation("修改驾校")

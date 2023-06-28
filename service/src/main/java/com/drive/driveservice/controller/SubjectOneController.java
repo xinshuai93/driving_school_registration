@@ -27,6 +27,7 @@ import java.util.List;
 @Api(tags = "科目一")
 @RestController
 @RequestMapping("/driveservice/subject-one")
+@CrossOrigin
 public class SubjectOneController {
 
     @Autowired

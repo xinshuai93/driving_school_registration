@@ -14,6 +14,7 @@ import com.drive.driveservice.service.OptionService;
 import com.drive.driveservice.service.QuestionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -95,6 +96,65 @@ public class QuestionController {
     }
 
     //TODO 修改题目和选项答案
+
+
+    @ApiOperation("查找单个选择题目")
+    @GetMapping("getQuestion/{id}")
+    public R getQuestion(@PathVariable String id){
+       Question byId = questionService.getById(id);
+       if (byId.getType()==3){
+           Options options = optionService.getById(byId.getAnswerId());
+           String answer = options.getContent();
+           return R.ok().data("question",byId).data("answer",answer);
+
+       }
+       else{
+           QueryWrapper<Options> wrapper = new QueryWrapper<>();
+           wrapper.eq("question_id",id);
+           List<Options> list = optionService.list(wrapper);
+           Options options = optionService.getById(byId.getAnswerId());
+           String answer = options.getContent();
+           return R.ok().data("byId",byId).data("list",list).data("answer",answer);
+       }
+    }
+
+    @ApiOperation("查看单个答案")
+    @GetMapping("getAnswer/{id}")
+    public R getAnswer(@PathVariable String id){
+        Options byId = optionService.getById(id);
+        return R.ok().data("byId",byId);
+    }
+
+    @ApiOperation("查询所有选项")
+    @GetMapping("getAllOption/{id}")
+    public R getAllOption(@PathVariable String id){
+        QueryWrapper<Question> questionQueryWrapper = new QueryWrapper<>();
+        questionQueryWrapper.eq("id",id);
+        if (questionService.getOne(questionQueryWrapper).getType()==3){
+            QueryWrapper<Options> wrapper = new QueryWrapper<>();
+            wrapper.le("id",100);
+            wrapper.ge("id",99);
+            List<Options> list = optionService.list(wrapper);
+            return R.ok().data("option",list);
+        }else {
+            QueryWrapper<Options> wrapper = new QueryWrapper<>();
+            List<Options> list = optionService.list(wrapper.eq("question_id",id));
+            return R.ok().data("option",list);
+        }
+
+    }
+
+    @ApiOperation("修改答案")
+    @GetMapping("updateAnswer/{qid}/{aid}")
+    public R updateAnswer(@PathVariable String qid,@PathVariable String aid){
+        QueryWrapper<Question> wrapper = new QueryWrapper<>();
+        wrapper.eq("id",qid);
+        Question question = questionService.getOne(wrapper);
+        question.setAnswerId(aid);
+        questionService.updateById(question);
+        return R.ok();
+    }
+
     @ApiOperation("修改题目")
     @PostMapping("updateQuestion")
     public R updateQuestion(@RequestBody Question question){
