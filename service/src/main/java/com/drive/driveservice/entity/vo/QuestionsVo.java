@@ -20,4 +20,6 @@ public class QuestionsVo {
     private String key;  //正确答案
     private Integer type;
     private String explains;
+    //是否选对:1:正确,2:错误
+    private Integer isTrue;
 }

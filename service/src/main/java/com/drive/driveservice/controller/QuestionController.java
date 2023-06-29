@@ -19,10 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -258,6 +255,70 @@ public class QuestionController {
         }
         return R.ok().data("objects1",objects1);
     }
+
+    @ApiOperation("平时练题试卷得出答案和解析")
+    @PostMapping("getScore")
+    public R getScore(@RequestBody List<QuestionsVo> list) {
+        List<QuestionsVo> objects = new ArrayList<>();
+        for (QuestionsVo questionsVo : list) {
+            String id = questionsVo.getId();
+            Integer type = questionsVo.getType();
+            String[] choose = questionsVo.getChoose();
+            Arrays.sort(choose);
+            //获取数据库的题
+            Question byId = questionService.getById(id);
+            String[] split = byId.getAnswerId().split(",");
+            Arrays.sort(split);
+            QuestionsVo vo = new QuestionsVo();
+            vo.setExplains(byId.getExplains());
+            vo.setId(id);
+            vo.setContent(byId.getContent());
+            vo.setChoose(choose);
+            vo.setOptionsList(questionsVo.getOptionsList());
+            vo.setType(type);
+            if (type == 1) {
+                String content = optionService.getById(byId.getAnswerId()).getContent();
+                vo.setKey(content);
+                if (choose[0].equals(split[0])) {
+                    vo.setIsTrue(1);  //如果正确那么就设置为1
+                }else {
+                    vo.setIsTrue(2);  //否则为2
+                }
+            } else if (type == 2) {
+                StringBuilder Keys = new StringBuilder();
+                for (String s : split) {
+                    String content = optionService.getById(s).getContent();
+                    Keys.append(content).append(";");
+                }
+                String Keys2 = Keys.toString();
+                vo.setKey(Keys2);
+                int flag = 0;
+                for (int i = 0; i < split.length; i++) {
+                    if (!choose[i].equals(split[i])){
+                        flag++;
+                        break;
+                    }
+                }
+                if (flag != 0) {
+                    vo.setIsTrue(2);
+                }else {
+                    vo.setIsTrue(1);
+                }
+            } else if (type == 3) {
+                String content = optionService.getById(byId.getAnswerId()).getContent();
+                vo.setKey(content);
+                if (choose[0].equals(split[0])) {
+                    vo.setIsTrue(1);  //如果正确那么就设置为1
+                }else {
+                    vo.setIsTrue(2);  //否则为2
+                }
+            }
+            objects.add(vo);
+        }
+        return R.ok().data("data",objects);
+    }
+
+
 
 
     //随机在数组里选出几个数
