@@ -256,6 +256,7 @@ public class QuestionController {
         return R.ok().data("objects1",objects1);
     }
 
+    //如果是考试的话，就根据每道题的类型和是否选正确来计算得分
     @ApiOperation("平时练题试卷得出答案和解析")
     @PostMapping("getScore")
     public R getScore(@RequestBody List<QuestionsVo> list) {
@@ -317,9 +318,6 @@ public class QuestionController {
         }
         return R.ok().data("data",objects);
     }
-
-
-
 
     //随机在数组里选出几个数
     private static List<String> createRandoms(List<String> list, int n) {
