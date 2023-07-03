@@ -294,10 +294,14 @@ public class QuestionController {
                 String Keys2 = Keys.toString();
                 vo.setKey(Keys2);
                 int flag = 0;
-                for (int i = 0; i < split.length; i++) {
-                    if (!choose[i].equals(split[i])){
-                        flag++;
-                        break;
+                if(split.length!=choose.length) {
+                    flag++;
+                }else {
+                    for (int i = 0; i < split.length; i++) {
+                        if (!choose[i].equals(split[i])){
+                            flag++;
+                            break;
+                        }
                     }
                 }
                 if (flag != 0) {

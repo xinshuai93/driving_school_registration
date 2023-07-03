@@ -1,10 +1,10 @@
 package com.drive.driveservice.controller;
 
 
+import com.aliyun.oss.OSSClient;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.exceptions.ClientException;
-import com.aliyuncs.vod.model.v20170321.GetVideoPlayAuthRequest;
-import com.aliyuncs.vod.model.v20170321.GetVideoPlayAuthResponse;
+import com.aliyuncs.vod.model.v20170321.*;
 import com.drive.commonutils.R;
 import com.drive.commonutils.vo.OptionVo;
 import com.drive.driveservice.dto.ChapterDTO;
@@ -17,9 +17,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -76,7 +79,7 @@ public class ChapterController {
             videoVo.setChapterName(chapter.getChapterName());
             List<OptionVo> list1 = new ArrayList<>();
             for (String s : split) {
-                String playAuth = getPlayAuth(s);
+                String playAuth = getPlayAuth1(s);
                 OptionVo optionVo = new OptionVo();
                 optionVo.setKey(s);
                 optionVo.setValue(playAuth);
@@ -88,9 +91,8 @@ public class ChapterController {
         return R.ok().data("objects",objects);
     }
 
-
     //根据视频id获取视频凭证
-    public static String getPlayAuth(String id) throws ClientException {
+    public static String getPlayAuth1(String id) throws ClientException {
         //获取阿里云存储相关常量
         String accessKeyId = ConstantVodUtils.ACCESS_KEY_ID;
         String accessKeySecret = ConstantVodUtils.ACCESS_KEY_SECRET;
@@ -98,18 +100,18 @@ public class ChapterController {
         //初始化
         DefaultAcsClient client = InitVodClient.initVodClient(accessKeyId, accessKeySecret);
 
-        //请求
-        GetVideoPlayAuthRequest request = new GetVideoPlayAuthRequest();
-        request.setVideoId(id);
-
-        //响应
-        GetVideoPlayAuthResponse response = client.getAcsResponse(request);
-
-        //得到播放凭证
-        String playAuth = response.getPlayAuth();
-
-        return playAuth;
+        GetPlayInfoRequest getPlayInfoRequest = new GetPlayInfoRequest();
+        getPlayInfoRequest.setVideoId(id);
+        GetPlayInfoResponse acsResponse = client.getAcsResponse(getPlayInfoRequest);
+        List<GetPlayInfoResponse.PlayInfo> playInfoList = acsResponse.getPlayInfoList();
+        //播放地址
+        for (GetPlayInfoResponse.PlayInfo playInfo : playInfoList) {
+            System.out.print("PlayInfo.PlayURL = " + playInfo.getPlayURL() + "\n");
+        }
+        return playInfoList.get(0).getPlayURL();
     }
+
+
 
 }
 
