@@ -10,6 +10,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * <p>
  *  前端控制器
@@ -96,6 +98,11 @@ public class BookExamController {
     @ApiOperation("预约考试")
     @PostMapping("bookExam/{id}")
     public R bookExam(@PathVariable String id,@RequestBody BookExam bookExam){
+        String pp = "不能重复预约考试";
+        if (cantRepeat(id).equals(false)) {
+            return R.error().data("data",pp);
+        }
+        bookExam.setIsPass(2);
         QueryWrapper<Student> wrapper = new QueryWrapper<>();
         bookExam.setStudentId(id);
         wrapper.eq("id",id);
@@ -105,6 +112,7 @@ public class BookExamController {
         String type = studentService.getOne(wrapper).getLicenseType();
         String message = "true";
         Integer progress = studentService.getOne(wrapper).getLearnProgress();
+        System.out.println(progress);
         if (progress == 1){
             QueryWrapper<SubjectOne> wrapper1 = new QueryWrapper<>();
             wrapper1.eq("type",type);
@@ -152,7 +160,18 @@ public class BookExamController {
         return R.error();
     }
 
-
-
+    @ApiOperation("去除重复预约")
+    @GetMapping("cantRepeat/{id}")
+    public Boolean cantRepeat(@PathVariable String id){
+        QueryWrapper<BookExam> wrapper = new QueryWrapper<>();
+        wrapper.eq("student_id",id);
+        List<BookExam> list = bookExamService.list(wrapper);
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getIsPass() == 2) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
 

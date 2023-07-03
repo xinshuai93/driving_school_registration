@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -40,6 +42,7 @@ public class BookExam implements Serializable {
     private String subjectType;
 
     @ApiModelProperty(value = "预约时间")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date time;
 
     @ApiModelProperty(value = "考试类型")

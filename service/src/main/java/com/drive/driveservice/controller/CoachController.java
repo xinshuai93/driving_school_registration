@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.drive.commonutils.R;
 import com.drive.driveservice.dto.CoachDTO;
+import com.drive.driveservice.dto.LearnTimeDTO;
 import com.drive.driveservice.entity.BookExam;
 import com.drive.driveservice.entity.Coach;
 import com.drive.driveservice.entity.Student;
@@ -19,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -161,6 +164,27 @@ public class CoachController {
         BookExam bookExam = bookExamService.getOne(wrapper);
         bookExam.setIsPass(3);
         bookExamService.updateById(bookExam);
+        return R.ok();
+    }
+
+    @ApiOperation("教练给学生打学时")
+    @PostMapping("addLearnTime")
+    public R addLearnTime(@RequestBody LearnTimeDTO learnTimeDTO) {
+        QueryWrapper<Student> wrapper = new QueryWrapper<>();
+        wrapper.eq("id", learnTimeDTO.getId());
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Long diff;
+        try {
+            Student student = studentService.getOne(wrapper);
+            Date begin = format.parse(learnTimeDTO.getBegin());
+            Date end = format.parse(learnTimeDTO.getEnd());
+            diff = (end.getTime() - begin.getTime())/(60 * 1000);
+            double dif = (double) diff;
+            student.setLearnTime(dif+studentService.getOne(wrapper).getLearnTime());
+            studentService.updateById(student);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
         return R.ok();
     }
 
