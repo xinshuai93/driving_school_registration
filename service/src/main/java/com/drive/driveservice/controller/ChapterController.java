@@ -5,6 +5,7 @@ import com.aliyun.oss.OSSClient;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.vod.model.v20170321.*;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.drive.commonutils.R;
 import com.drive.commonutils.vo.OptionVo;
 import com.drive.driveservice.dto.ChapterDTO;
@@ -67,10 +68,12 @@ public class ChapterController {
         return R.ok();
     }
 
-    @ApiOperation("查看所有章节和视频")
-    @GetMapping("getChapterAndVideo")
-    public R getChapterAndVideo() throws ClientException {
-        List<Chapter> list = chapterService.list(null);
+    @ApiOperation("查看当前科目下所有章节和视频")
+    @GetMapping("getChapterAndVideo/{subject}")
+    public R getChapterAndVideo(@PathVariable String subject) throws ClientException {
+        QueryWrapper<Chapter> wrapper = new QueryWrapper<>();
+        wrapper.eq("subject",subject);
+        List<Chapter> list = chapterService.list(wrapper);
         List<ChapterAndVideoVo> objects = new ArrayList<>();
         for (Chapter chapter : list) {
             String[] split = chapter.getVideoId().split(",");
@@ -104,10 +107,6 @@ public class ChapterController {
         getPlayInfoRequest.setVideoId(id);
         GetPlayInfoResponse acsResponse = client.getAcsResponse(getPlayInfoRequest);
         List<GetPlayInfoResponse.PlayInfo> playInfoList = acsResponse.getPlayInfoList();
-        //播放地址
-        for (GetPlayInfoResponse.PlayInfo playInfo : playInfoList) {
-            System.out.print("PlayInfo.PlayURL = " + playInfo.getPlayURL() + "\n");
-        }
         return playInfoList.get(0).getPlayURL();
     }
 

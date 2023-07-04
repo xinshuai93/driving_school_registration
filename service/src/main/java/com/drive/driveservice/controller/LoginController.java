@@ -33,7 +33,7 @@ public class LoginController {
         Integer role = user.getRole();
         String fail = "fail";
         if (user.getPassword().equals(dto.getPassword()) && Objects.equals(user.getRole(), dto.getRole())) {
-            return R.ok().data("message",roleId);
+            return R.ok().data("message",user);
         }
         return R.error().data("message",fail);
     }

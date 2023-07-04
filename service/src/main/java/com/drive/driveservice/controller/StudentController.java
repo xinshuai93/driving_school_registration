@@ -66,6 +66,13 @@ public class StudentController {
         return R.ok();
     }
 
+    @ApiOperation("通过id查询学员")
+    @GetMapping("getById/{id}")
+    public R getById(@PathVariable String id) {
+        Student byId = studentService.getById(id);
+        return R.ok().data("student",byId);
+    }
+
     @ApiOperation("分页查询")
     @PostMapping("pageList/{page}/{limit}")
     public R pageList(@PathVariable Long page,
