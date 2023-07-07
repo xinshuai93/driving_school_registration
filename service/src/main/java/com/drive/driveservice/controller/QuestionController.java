@@ -183,7 +183,7 @@ public class QuestionController {
         for (Question question : lista) {
             idList.add(question.getId());
         }
-        List<String> randoms = createRandoms(idList, 2);
+        List<String> randoms = createRandoms(idList, 10);
         QueryWrapper<Question> wrapper2 = new QueryWrapper<>();
         wrapper2.in("id",randoms);
         List<Question> list = questionService.list(wrapper2);
@@ -210,7 +210,7 @@ public class QuestionController {
         for (Question question : listaa) {
             idLista.add(question.getId());
         }
-        List<String> randomsa = createRandoms(idLista, 2);
+        List<String> randomsa = createRandoms(idLista, 5);
         QueryWrapper<Question> wrapper2a = new QueryWrapper<>();
         wrapper2a.in("id",randomsa);
         List<Question> listz = questionService.list(wrapper2a);
@@ -236,7 +236,7 @@ public class QuestionController {
         for (Question question : listaab) {
             idListab.add(question.getId());
         }
-        List<String> randomsab = createRandoms(idListab, 2);
+        List<String> randomsab = createRandoms(idListab, 5);
         QueryWrapper<Question> wrapper2ab = new QueryWrapper<>();
         wrapper2ab.in("id",randomsab);
         List<Question> listzb = questionService.list(wrapper2ab);
