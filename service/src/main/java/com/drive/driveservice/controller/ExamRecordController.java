@@ -39,7 +39,7 @@ public class ExamRecordController {
     @Autowired
     private BookExamService bookExamService;
 
-    @ApiOperation("学员考试记录")
+    @ApiOperation("获得学员考试记录")
     @PostMapping("getExamRecord/{id}")
     public R getExamRecord(@PathVariable String id){
         QueryWrapper<BookExam> wrapper = new QueryWrapper<>();
@@ -79,6 +79,19 @@ public class ExamRecordController {
             list.add(examRecordVo);
         }
         return R.ok().data("list",list);
+    }
+
+    @ApiOperation("插入成绩")
+    @PostMapping("addGrade")
+    public R addGrade(@RequestBody ExamRecord examRecord){
+        examRecordService.save(examRecord);
+        QueryWrapper<BookExam> wrapper = new QueryWrapper<>();
+        wrapper.eq("student_id",examRecord.getStuId());
+        wrapper.eq("is_pass",1);
+        BookExam bookExam = bookExamService.getOne(wrapper);
+        bookExam.setIsPass(4);
+        bookExamService.updateById(bookExam);
+        return R.ok();
     }
 }
 

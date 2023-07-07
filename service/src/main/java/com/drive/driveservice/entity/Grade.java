@@ -47,8 +47,6 @@ public class Grade implements Serializable {
     @ApiModelProperty(value = "学生姓名")
     private String stuName;
 
-    @ApiModelProperty(value = "教练id")
-    private String coachId;
 
 
 }

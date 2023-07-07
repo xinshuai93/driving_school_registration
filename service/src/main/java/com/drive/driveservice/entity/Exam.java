@@ -41,5 +41,8 @@ public class Exam implements Serializable {
     @ApiModelProperty(value = "试卷类型")
     private String type;
 
+    @ApiModelProperty(value = "考试时长")
+    private Double time;
+
 
 }

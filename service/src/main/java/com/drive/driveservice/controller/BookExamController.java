@@ -167,7 +167,7 @@ public class BookExamController {
         wrapper.eq("student_id",id);
         List<BookExam> list = bookExamService.list(wrapper);
         for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getIsPass() == 2) {
+            if (list.get(i).getIsPass() == 2 || list.get(i).getIsPass() == 1) {
                 return false;
             }
         }

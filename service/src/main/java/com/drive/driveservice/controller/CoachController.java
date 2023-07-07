@@ -8,10 +8,12 @@ import com.drive.driveservice.dto.CoachDTO;
 import com.drive.driveservice.dto.LearnTimeDTO;
 import com.drive.driveservice.entity.BookExam;
 import com.drive.driveservice.entity.Coach;
+import com.drive.driveservice.entity.Grade;
 import com.drive.driveservice.entity.Student;
 import com.drive.driveservice.entity.vo.CoachQuery;
 import com.drive.driveservice.service.BookExamService;
 import com.drive.driveservice.service.CoachService;
+import com.drive.driveservice.service.GradeService;
 import com.drive.driveservice.service.StudentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -48,6 +50,9 @@ public class CoachController {
 
     @Autowired
     private BookExamService bookExamService;
+
+    @Autowired
+    private GradeService gradeService;
 
 
     @ApiOperation("新增教练")
@@ -191,6 +196,24 @@ public class CoachController {
             throw new RuntimeException(e);
         }
         return R.ok();
+    }
+
+    @ApiOperation("教练查看自己学员成绩")
+    @PostMapping("getSelfStuGrade/{id}")
+    public R getSelfStuGrade(@PathVariable String id){
+        QueryWrapper<Student> studentQueryWrapper = new QueryWrapper<>();
+        studentQueryWrapper.eq("coach_id",id);
+        List<Grade> gradeList = new ArrayList<>();
+        List<Student> studentList =  studentService.list(studentQueryWrapper);
+        for (int i = 0; i < studentList.size(); i++) {
+            QueryWrapper<Grade> gradeQueryWrapper = new QueryWrapper<>();
+            gradeQueryWrapper.eq("stu_id",studentList.get(i).getId());
+            Grade grade = gradeService.getOne(gradeQueryWrapper);
+            grade.setStuName(studentList.get(i).getName());
+            gradeList.add(grade);
+        }
+
+        return R.ok().data("data",gradeList);
     }
 
 }

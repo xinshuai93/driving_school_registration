@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.drive.commonutils.R;
 import com.drive.driveservice.entity.*;
+import com.drive.driveservice.entity.vo.ExamInfoVo;
 import com.drive.driveservice.entity.vo.StudentQuery;
 import com.drive.driveservice.service.*;
 import io.swagger.annotations.Api;
@@ -44,6 +45,15 @@ public class StudentController {
 
     @Autowired
     private SubjectFourService subjectFourService;
+
+    @Autowired
+    private BookExamService bookExamService;
+
+    @Autowired
+    private ExamService examService;
+
+    @Autowired
+    private GradeService gradeService;
 
     @ApiOperation("新增学员")
     @PostMapping("addStudent")
@@ -135,6 +145,32 @@ public class StudentController {
             return R.ok().data("needTime",needTime);
         }
         return R.error();
+    }
+
+    @ApiOperation("获取自己的考试信息")
+    @GetMapping("getExamInfo/{id}")
+    public R getExamInfo(@PathVariable String id){
+        ExamInfoVo examInfoVo = new ExamInfoVo();
+        QueryWrapper<BookExam> wrapper =new QueryWrapper<>();
+        wrapper.eq("student_id",id);
+        wrapper.eq("is_pass",1);
+        BookExam bookExam = bookExamService.getOne(wrapper);
+        examInfoVo.setTime(bookExam.getTime());
+        examInfoVo.setSubjectType(bookExam.getSubjectType());
+        QueryWrapper<Exam> wrapper1 = new QueryWrapper<>();
+        wrapper1.eq("id",bookExam.getPaperId());
+        Exam exam = examService.getOne(wrapper1);
+        examInfoVo.setChooseNum(exam.getChooseNum());
+        examInfoVo.setDuration(exam.getTime());
+        examInfoVo.setJudgeNum(exam.getJudgeNum());
+        examInfoVo.setMultipleNum(exam.getMultipleNum());
+        return R.ok().data("data",examInfoVo);
+    }
+
+    @ApiOperation("学员查询自己成绩")
+    @GetMapping("getStuGrade/{id}")
+    public R getStuGrade(@PathVariable String id){
+        return R.ok().data("data",gradeService.getById(id));
     }
 
 
