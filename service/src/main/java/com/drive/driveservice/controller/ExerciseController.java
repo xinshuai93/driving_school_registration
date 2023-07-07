@@ -27,6 +27,7 @@ import java.util.List;
  * @since 2023-07-07
  */
 @Api(tags = "预约练车")
+@CrossOrigin
 @RestController
 @RequestMapping("/driveservice/exercise")
 public class ExerciseController {
@@ -76,6 +77,15 @@ public class ExerciseController {
             return R.ok();
         }
         return R.error();
+    }
+
+    @ApiOperation("根据学生id获取预约练车信息")
+    @GetMapping("getExercise/{id}")
+    public R getExercise(@PathVariable String id) {
+        QueryWrapper<Exercise> wrapper = new QueryWrapper<>();
+        wrapper.eq("student_id",id);
+        List<Exercise> list = exerciseService.list(wrapper);
+        return R.ok().data("exerciseList",list);
     }
 
 
