@@ -177,6 +177,15 @@ public class StudentController {
         return R.ok().data("data",gradeService.getById(id));
     }
 
+    @ApiOperation("查询自己的预约考试记录")
+    @GetMapping("getStuBookExam")
+    public R getStuBookExam(@PathVariable String id){
+        QueryWrapper<BookExam> wrapper = new QueryWrapper<>();
+        wrapper.eq("student_id",id);
+        List<BookExam> list = bookExamService.list(wrapper);
+        return R.ok().data("list",list);
+    }
+
 
 }
 
