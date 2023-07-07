@@ -33,7 +33,7 @@ public class User implements Serializable {
     private String name;
 
     @ApiModelProperty(value = "性别:1为男，2为女")
-    private Integer sex;
+    private String sex;
 
     @ApiModelProperty(value = "手机号码")
     private String phone;

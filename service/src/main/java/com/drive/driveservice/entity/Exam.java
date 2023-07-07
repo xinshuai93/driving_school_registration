@@ -32,6 +32,9 @@ public class Exam implements Serializable {
     @ApiModelProperty(value = "选择题数量")
     private Integer chooseNum;
 
+    @ApiModelProperty(value = "多选题数量")
+    private Integer multipleNum;
+
     @ApiModelProperty(value = "判断题数量")
     private Integer judgeNum;
 

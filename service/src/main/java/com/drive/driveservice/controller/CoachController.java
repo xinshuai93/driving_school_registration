@@ -152,6 +152,11 @@ public class CoachController {
         wrapper.eq("id",id);
         BookExam bookExam = bookExamService.getOne(wrapper);
         bookExam.setIsPass(1);
+        if (bookExam.getSubjectType().equals("科目1")) {
+            bookExam.setPaperId("1");
+        }else {
+            bookExam.setPaperId("2");
+        }
         bookExamService.updateById(bookExam);
         return R.ok();
     }

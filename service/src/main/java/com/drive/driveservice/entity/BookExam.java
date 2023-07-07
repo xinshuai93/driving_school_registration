@@ -51,5 +51,8 @@ public class BookExam implements Serializable {
     @ApiModelProperty(value = "是否通过")
     private Integer isPass;
 
+    @ApiModelProperty(value = "试卷id")
+    private  String paperId;
+
 
 }

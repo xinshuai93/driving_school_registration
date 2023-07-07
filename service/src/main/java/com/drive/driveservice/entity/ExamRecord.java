@@ -3,6 +3,9 @@ package com.drive.driveservice.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -37,6 +40,10 @@ public class ExamRecord implements Serializable {
 
     @ApiModelProperty(value = "考试分数")
     private Integer score;
+
+    @ApiModelProperty(value = "考试时间")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date time;
 
 
 }

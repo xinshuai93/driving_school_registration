@@ -37,7 +37,7 @@ public class Student implements Serializable {
     private Integer age;
 
     @ApiModelProperty(value = "性别")
-    private Boolean sex;
+    private String sex;
 
     @ApiModelProperty(value = "身份证")
     private String card;
