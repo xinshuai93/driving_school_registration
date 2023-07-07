@@ -100,7 +100,7 @@ public class BookExamController {
     public R bookExam(@PathVariable String id,@RequestBody BookExam bookExam){
         String pp = "不能重复预约考试";
         if (cantRepeat(id).equals(false)) {
-            return R.error().data("data",pp);
+            return R.error().data("message",pp);
         }
         bookExam.setIsPass(2);
         QueryWrapper<Student> wrapper = new QueryWrapper<>();
