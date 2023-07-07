@@ -29,13 +29,10 @@ public class LoginController {
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.eq("phone",dto.getPhone());
         User user = userService.list(wrapper).get(0);
-        String roleId = user.getRoleId();
-        Integer role = user.getRole();
         String fail = "fail";
         if (user.getPassword().equals(dto.getPassword()) && Objects.equals(user.getRole(), dto.getRole())) {
             return R.ok().data("message",user);
         }
         return R.error().data("message",fail);
     }
-
 }
