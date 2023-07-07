@@ -103,7 +103,7 @@ public class ApplicationController {
             wrapper.ge("create_time",begin);
         }
         if (!StringUtils.isEmpty(end)){
-            wrapper.le("create_time",end);
+            wrapper.le("gmt_create",end);
         }
         if (!StringUtils.isEmpty(isPass)){
             wrapper.eq("is_pass",isPass);

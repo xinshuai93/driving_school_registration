@@ -68,10 +68,10 @@ public class Application implements Serializable {
     @ApiModelProperty(value = "报名时间")
     @TableField(fill = FieldFill.INSERT)
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDateTime createTime;
+    private Date gmtCreate;
 
     @ApiModelProperty(value = "审核状态")
-    private Boolean isPass;
+    private Integer isPass;
 
 
 }
