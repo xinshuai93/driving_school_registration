@@ -155,6 +155,10 @@ public class StudentController {
         wrapper.eq("student_id",id);
         wrapper.eq("is_pass",1);
         BookExam bookExam = bookExamService.getOne(wrapper);
+        if (bookExam == null) {
+            String data = "未查到考试记录";
+            return R.ok().data("data",data);
+        }
         examInfoVo.setTime(bookExam.getTime());
         examInfoVo.setSubjectType(bookExam.getSubjectType());
         QueryWrapper<Exam> wrapper1 = new QueryWrapper<>();
