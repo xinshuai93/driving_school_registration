@@ -2,12 +2,14 @@ package com.drive.driveservice.dto;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * @version 1.0
@@ -19,6 +21,9 @@ public class ApplicationDTO {
 
     @ApiModelProperty("报名人姓名")
     private String name;
+
+    @ApiModelProperty("报名人性别")
+    private String sex;
 
     @ApiModelProperty("报名人年龄")
     private Integer age;
@@ -35,9 +40,6 @@ public class ApplicationDTO {
     @ApiModelProperty("上传附件的路径")
     private String file;
 
-    @ApiModelProperty("身份证照片")
-    private String pictureCard;
-
     @ApiModelProperty(value = "邮箱")
     private String email;
 
@@ -49,5 +51,6 @@ public class ApplicationDTO {
 
     @ApiModelProperty("创建时间")
     @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createTime;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date gmtCreate;
 }

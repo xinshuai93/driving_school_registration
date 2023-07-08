@@ -3,12 +3,15 @@ package com.drive.driveservice.service.impl;
 import com.drive.commonutils.R;
 import com.drive.driveservice.dto.ApplicationDTO;
 import com.drive.driveservice.entity.Application;
+import com.drive.driveservice.entity.Student;
 import com.drive.driveservice.entity.User;
 import com.drive.driveservice.mapper.ApplicationMapper;
 import com.drive.driveservice.service.ApplicationService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.drive.driveservice.service.StudentService;
 import com.drive.driveservice.service.UserService;
 import com.sun.mail.util.MailSSLSocketFactory;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STUnderline;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +34,9 @@ public class ApplicationServiceImpl extends ServiceImpl<ApplicationMapper, Appli
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private StudentService studentService;
     @Override
     public String sendMail(ApplicationDTO dto) throws GeneralSecurityException, MessagingException {
         String email = dto.getEmail();
@@ -73,13 +79,26 @@ public class ApplicationServiceImpl extends ServiceImpl<ApplicationMapper, Appli
         transport.sendMessage(mimeMessage,mimeMessage.getAllRecipients());
         //关闭连接
         transport.close();
+
+        //添加学生表
+        Student student = new Student();
+        student.setName(dto.getName());student.setAge(dto.getAge());
+        student.setCard(dto.getPersonCard());student.setSex(dto.getSex());
+        student.setPhone(dto.getPhone());student.setAdress(dto.getAdress());
+        student.setLicenseType(dto.getType());student.setRegisteTime(dto.getGmtCreate());
+        student.setHealthCondition("健康");student.setCoachId("1");
+        studentService.save(student);
+        String studentId = student.getId();
+
         User user = new User();
         user.setName(name);
         user.setPhone(phone);
         user.setPassword("123456");
         user.setRole(3);
-        user.setRoleId("1");
+        user.setRoleId(studentId);
         boolean save = userService.save(user);
+
+
         if (save) {
             return "success";
         }
