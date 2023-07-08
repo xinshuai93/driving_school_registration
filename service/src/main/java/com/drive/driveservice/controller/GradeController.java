@@ -26,24 +26,5 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 public class GradeController {
 
-    @Autowired
-    private GradeService gradeService;
-
-    @Autowired
-    private BookExamService bookExamService;
-
-    @ApiOperation("插入成绩")
-    @PostMapping("addGrade")
-    public R addGrade(@RequestBody Grade grade){
-        gradeService.updateById(grade);
-        QueryWrapper<BookExam> wrapper = new QueryWrapper<>();
-        wrapper.eq("student_id",grade.getStuId());
-        wrapper.eq("is_pass",1);
-        BookExam bookExam = bookExamService.getOne(wrapper);
-        bookExam.setIsPass(4);
-        bookExamService.updateById(bookExam);
-        return R.ok();
-    }
-
 }
 
