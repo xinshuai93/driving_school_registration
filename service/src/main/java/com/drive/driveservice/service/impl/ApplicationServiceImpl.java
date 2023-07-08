@@ -68,7 +68,7 @@ public class ApplicationServiceImpl extends ServiceImpl<ApplicationMapper, Appli
         //邮件标题
         mimeMessage.setSubject(name + "同学,您好。恭喜您报名成功。请您查收驾考宝典系统的账号和初始密码");
         //邮件内容
-        mimeMessage.setContent(name + "同学,您好。恭喜您报名成功。您的账号为:" + phone + ";初始密码为:123456。请您登陆系统后修改初始密码。","text/html;charset=UTF-8");
+        mimeMessage.setContent(name + "同学,您好。恭喜您报名成功。您的账号为:" + phone + ";初始密码为:123456。系统根据您的报名信息，为您分配了最合适您的教练：李磊。请您登陆系统后修改初始密码。","text/html;charset=UTF-8");
         //发送邮件
         transport.sendMessage(mimeMessage,mimeMessage.getAllRecipients());
         //关闭连接
@@ -78,6 +78,7 @@ public class ApplicationServiceImpl extends ServiceImpl<ApplicationMapper, Appli
         user.setPhone(phone);
         user.setPassword("123456");
         user.setRole(3);
+        user.setRoleId("1");
         boolean save = userService.save(user);
         if (save) {
             return "success";

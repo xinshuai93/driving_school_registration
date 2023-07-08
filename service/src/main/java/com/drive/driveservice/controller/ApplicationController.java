@@ -90,7 +90,7 @@ public class ApplicationController {
     }
 
     @ApiOperation("分页查询")
-    @PostMapping("pageApplication")
+    @PostMapping("pageApplication/{page}/{limit}")
     public R pageApplication(@PathVariable Long page,
                              @PathVariable Long limit,
                              @RequestBody(required = false) ApplicationQuery applicationQuery){
